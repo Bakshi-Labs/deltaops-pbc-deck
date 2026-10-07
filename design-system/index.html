@@ -10,18 +10,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
-  :root { --page:#E9E4DA; --ink:#161513; --muted:#7D776D; }
+  :root { --stage:#0E0F0F; --ui:rgba(22,21,19,.82); --ui-ink:#F4F1EA; --accent:#5ED3C4; }
   * { box-sizing:border-box; }
-  html, body { margin:0; background:var(--page); color:var(--ink); font-family:'Inter', Arial, sans-serif; }
-  header.top { max-width:1600px; margin:0 auto; padding:28px 16px 8px; display:flex; justify-content:space-between;
-    align-items:center; gap:16px; font:500 14px/1.3 'IBM Plex Mono', monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
-  header.top img { height:28px; }
-  header.top .meta { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 20px; text-align:right; }
-  header.top a { color:#0B7F74; }
-  main { max-width:1600px; margin:0 auto; padding:8px 16px 48px; display:flex; flex-direction:column; gap:24px; }
-  .frame { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:10px;
-    box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 20px 40px -24px rgba(40,30,20,.45); }
-  .scaler { position:absolute; left:0; top:0; width:1920px; height:1080px; transform-origin:0 0; }
+  html, body { margin:0; height:100%; background:var(--stage); font-family:'Inter', Arial, sans-serif; overflow:hidden; }
+  main { position:fixed; inset:0; }
+  .frame { position:absolute; left:50%; top:50%; width:1920px; height:1080px; overflow:hidden; display:none;
+    transform-origin:0 0; }
+  .frame.active { display:block; }
+  .scaler { position:absolute; left:0; top:0; width:1920px; height:1080px; }
   section { position:relative; width:1920px; height:1080px; overflow:hidden; }
   section p, section h1, section h2, section h3, section ul, section ol { margin:0; }
   section p { line-height:1.4; }
@@ -30,15 +26,25 @@
   section hr { border:0; margin:0; height:0; }
   section x-connector, section x-shape { display:block; }
   section svg.wires { position:absolute; left:0; top:0; width:1920px; height:1080px; pointer-events:none; overflow:visible; }
-  footer.bottom { max-width:1600px; margin:0 auto; padding:0 16px 40px; font:500 13px/1.5 'IBM Plex Mono', monospace;
-    letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
-  footer.bottom a { color:#0B7F74; }
-  @media print { header.top, footer.bottom { display:none; } main { padding:0; gap:0; max-width:none; }
-    .frame { border-radius:0; box-shadow:none; break-after:page; } }
+  nav.controls { position:fixed; left:50%; bottom:16px; transform:translateX(-50%); display:flex; align-items:center; gap:4px;
+    padding:6px; border-radius:999px; background:var(--ui); color:var(--ui-ink); backdrop-filter:blur(8px);
+    font:500 13px/1 'IBM Plex Mono', monospace; letter-spacing:.04em; white-space:nowrap;
+    transition:opacity .3s; opacity:1; z-index:10; max-width:calc(100vw - 32px); }
+  body.idle nav.controls { opacity:0; pointer-events:none; }
+  nav.controls button { all:unset; cursor:pointer; width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:18px; }
+  nav.controls button:hover { background:rgba(255,255,255,.12); }
+  nav.controls button:focus-visible { outline:2px solid var(--accent); }
+  nav.controls .count { min-width:64px; text-align:center; }
+  nav.controls a { color:var(--accent); text-decoration:none; padding:0 12px 0 8px; border-left:1px solid rgba(255,255,255,.2); margin-left:4px; }
+  nav.controls a:hover { text-decoration:underline; }
+  @media print {
+    html, body { height:auto; overflow:visible; background:#fff; }
+    main { position:static; } nav.controls { display:none; }
+    .frame { display:block; position:relative; left:0; top:0; transform:none !important; break-after:page; }
+  }
 </style>
 </head>
 <body>
-<header class="top"><img src="logo.svg" alt="DeltaOps"><span class="meta"><span>PBC AI Training Partnership (Design System)</span><a href="../">← Original version</a></span></header>
 <main>
 <div class="frame"><div class="scaler"><section id="cover" data-transition="fade" style="background:#0C1B24; color:#FFFFFF; font-family:'Inter', Arial, sans-serif; padding:128px 128px 160px">
 <div style="position:absolute; left:900px; top:20px; width:980px; height:760px; background:radial-gradient(circle at 50% 50%, rgba(89,199,252,.24) 0%, rgba(22,255,198,.09) 45%, rgba(12,27,36,0) 70%); filter:blur(20px)"></div><p style="position:absolute; left:108px; top:92px; width:1400px; font-size:24px; font-weight:500; color:#8FDCD2; font-family:'IBM Plex Mono', 'Courier New', monospace; line-height:1.25; letter-spacing:3.5px; text-transform:uppercase">Proposal for PBC &#183; AI training delivery partnership</p><img src="logo-white.svg" alt="DeltaOps" style="position:absolute; left:1625px; top:82px; width:187px; height:39px; object-fit:contain"><h1 style="position:absolute; left:108px; top:430px; width:1600px; font-size:112px; font-weight:600; color:#FFFFFF; font-family:'Fraunces', Georgia, serif; line-height:1.06; letter-spacing:-1px">From AI curiosity</h1><p style="position:absolute; left:108px; top:550px; width:1600px; font-size:112px; font-weight:600; color:#16FFC6; font-family:'Fraunces', Georgia, serif; line-height:1.06; letter-spacing:-1px; font-style:italic; background:linear-gradient(135deg, #59C7FC 0%, #16FFC6 100%); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent">to business capability.</p><p style="position:absolute; left:108px; top:720px; width:1200px; font-size:32px; font-weight:400; color:#8FA6B0; line-height:1.5">A practical AI training framework for small businesses.</p><div style="position:absolute; left:108px; top:904px; width:1704px; height:2px; background:#1A303C"></div><p style="position:absolute; left:108px; top:930px; width:800px; font-size:26px; font-weight:400; color:#8FA6B0">Prepared for PBC</p><p style="position:absolute; left:1212px; top:932px; width:600px; font-size:24px; font-weight:500; color:#8FA6B0; font-family:'IBM Plex Mono', 'Courier New', monospace; letter-spacing:3px; text-align:right; text-transform:uppercase">deltaops.consulting</p>
@@ -126,7 +132,13 @@
 
 </section></div></div>
 </main>
-<footer class="bottom">DeltaOps &#183; <a href="https://deltaops.consulting">deltaops.consulting</a></footer>
+<nav class="controls" aria-label="Slide navigation">
+  <button type="button" data-go="-1" aria-label="Previous slide">&#8592;</button>
+  <span class="count" aria-live="polite"></span>
+  <button type="button" data-go="1" aria-label="Next slide">&#8594;</button>
+  <button type="button" data-fs aria-label="Full screen" title="Full screen (F)">&#x26F6;</button>
+  <a href="../">← Original version</a>
+</nav>
 <script>
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
@@ -175,12 +187,51 @@
     section.appendChild(svg);
   }
   document.querySelectorAll('section').forEach(wires);
+  var frames = [].slice.call(document.querySelectorAll('.frame')), count = document.querySelector('nav .count'), cur = 0;
   function fit() {
-    document.querySelectorAll('.frame').forEach(function (f) {
-      f.firstElementChild.style.transform = 'scale(' + (f.clientWidth / 1920) + ')';
-    });
+    var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    frames.forEach(function (f) { f.style.transform = 'scale(' + k + ') translate(-50%, -50%)'; });
   }
-  window.addEventListener('resize', fit); fit();
+  function show(i) {
+    cur = Math.max(0, Math.min(frames.length - 1, i));
+    frames.forEach(function (f, j) { f.classList.toggle('active', j === cur); });
+    count.textContent = (cur + 1) + ' / ' + frames.length;
+    history.replaceState(null, '', '#' + (cur + 1));
+  }
+  function fromHash() { var n = parseInt(location.hash.slice(1), 10); return n > 0 ? n - 1 : 0; }
+  function fullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'Enter') show(cur + 1);
+    else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || k === 'Backspace') show(cur - 1);
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(frames.length - 1);
+    else if (k === 'f' || k === 'F') fullscreen();
+    else return;
+    e.preventDefault();
+  });
+  document.querySelectorAll('nav [data-go]').forEach(function (b) {
+    b.addEventListener('click', function () { show(cur + parseInt(b.getAttribute('data-go'), 10)); });
+  });
+  document.querySelector('nav [data-fs]').addEventListener('click', fullscreen);
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1));
+  });
+  var idle;
+  function wake() { document.body.classList.remove('idle'); clearTimeout(idle);
+    idle = setTimeout(function () { document.body.classList.add('idle'); }, 2500); }
+  ['mousemove', 'touchstart', 'keydown'].forEach(function (t) { document.addEventListener(t, wake, { passive: true }); });
+  window.addEventListener('hashchange', function () { show(fromHash()); });
+  window.addEventListener('resize', fit);
+  fit(); show(fromHash()); wake();
 })();
 </script>
 </body>
